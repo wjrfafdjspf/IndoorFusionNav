@@ -1,3 +1,31 @@
+graph TD
+    A[手机传感器] --> B[步伐检测]；
+    A --> C[航向估计]；
+    A --> D[Wi-Fi RSS采集]；
+    
+    B --> E[步长推算]；
+    C --> E；
+    
+    E --> F[PDR 状态模型]；
+    F --> G[扩展卡尔曼滤波]；
+    
+    D --> H[WKNN在线匹配]；
+    H --> I[Wi-Fi指纹定位观测模型]；
+    I --> G；
+    
+    G --> J[定位结果输出]；
+    
+    subgraph "初始化阶段"
+        K[初始位置与航向角] --> F；
+        K --> G；
+        L[Wi-Fi指纹库] --> H；
+    end
+    
+    subgraph "EKF更新循环"
+        G --> M[状态更新与协方差更新]；
+        M --> F；
+        M --> I；
+    end
 # IndoorFusionNav
 
 ![](https://raw.githubusercontent.com/salmoshu/Winchell-ImgBed/main/img/20250616-225547.jpg)
